@@ -1,0 +1,48 @@
+1. We want to reward our users who have been around the longest.Find the 5 oldest users.
+
+SELECT *,current_timestamp()-CREATED_AT AS ACC_AGE FROM USERS ORDER BY ACC_AGE
+DESC  LIMIT 5;
+
+2. What day of the week do most users register on? We need to figure out when to schedule an ad campgain
+
+SELECT dayname(CREATED_AT) AS REGISTER_DAY,COUNT(*) AS MAX_REG_DAY FROM USERS
+group by REGISTER_DAY;
+
+3. We want to target our inactive users with an email campaign.
+
+Find the users who have never posted a photo
+(SELECT USERNAME FROM USERS LEFT JOIN PHOTOS ON USERS.ID=PHOTOS.USER_ID WHERE PHOTOS.USER_ID IS NULL);
+
+4. We're running a new contest to see who can get the most likes on a single photo. WHO WON??!!
+
+SELECT photo_id,COUNT(*) AS MAX_LIKES,images as image 
+FROM LIKES join photos on likes.photo_id=photos.id
+GROUP BY PHOTO_ID ORDER BY MAX_LIKES DESC limit 1;
+
+5. Our Investors want to know...How many times does the average user post?
+
+SELECT AVG(subquery.counts) AS average
+FROM (
+    SELECT IFNULL(COUNT(PHOTOS.IMAGES), 0) AS counts
+    FROM PHOTOS
+    GROUP BY USER_ID
+) AS subquery;
+
+6. Top 5 hashtags
+
+select tag_name,tag_id,count(tag_id) as count from photo_tags 
+join tags on tags.id=photo_tags.tag_id
+group by tag_id 
+order by count(tag_id) desc limit 5;
+
+
+7.  We have a small problem with bots on our site... Find users who have liked every single photo on the site
+
+select * from users where id in(
+select user_id from likes group by user_id having count(photo_id) =
+(select count(id) from photos))
+
+8.  We also have a problem with celebrities .Find users who have never commented on a photo
+
+select * from users where id not in(
+select user_id from comments group by user_id having count(*) != 0);

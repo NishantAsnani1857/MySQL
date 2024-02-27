@@ -1,0 +1,40 @@
+1. Reverse and Uppercase the following sentence:
+select upper(reverse('Reverse and Uppercase the following sentence'));
+
+2. What does this print out?
+SELECT
+  REPLACE
+  (
+  CONCAT('I', ' ', 'like', ' ', 'cats'),
+  ' ',
+  '-'
+  );
+
+Output:I-like-cats
+
+
+3. Format title in books table
+select replace(title," ",'->') from books;
+
+4. Reverse lastname of author and display along with actual one.
+select author_lname as forwards, reverse(author_lname) as backwards from books;
+
+5. Full name in caps author
+select concat(upper(author_fname),' ',upper(author_lname)) as full_name_in_caps from books;
+
+6. Form a sentence of book released
+select concat(title,'was released in',released_Year) as blurb from books;
+
+7. Count characters of title 
+select title, char_length(title) as character_count from books;
+
+
+8. Print the table.
+ +---------------+-------------+--------------+
+| short title   | author      | quantity     |
++---------------+-------------+--------------+
+| American G... | Gaiman,Neil | 12 in stock  |
+| A Heartbre... | Eggers,Dave | 104 in stock |
++---------------+-------------+--------------+
+
+select concat(substring(title,1,10),'...') as short_title,concat(author_lname,',',author_fname) as author,concat(stock_quantity,'in stock') as quantity from books;

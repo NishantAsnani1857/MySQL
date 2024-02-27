@@ -1,0 +1,33 @@
+
+1. Select All Story Collections Titles  That contain 'stories'
+select title from books where title like '%stories%';
+
+2. Find The Longest Book Print Out the Title and Page Count
+select title,pages from books order by 2 desc limit 1;
+
+
+3. Print a summary containing the title and year, for the 3 most recent books
+ select title,released_year from books order by 2 desc limit 0,3;
+
+4. Find all books with an author_lname that contains a space(" ");
+select title,author_lname from books where author_lname like'% %';
+
+5. Find The 3 Books With The Lowest Stock Select title, year, and stock
+select title,released_year,stock_quantity from books order by 3 limit 0,3;
+
+6. Print title and author_lname, sorted first by author_lname and then by title
+ select title,author_lname from books order by 2,1;
+
+7. Make This Happen... Sorted Alphabetically By Last Name
+
+| MY FAVORITE AUTHOR IS RAYMOND CARVER!       |
+| MY FAVORITE AUTHOR IS RAYMOND CARVER!       |
+| MY FAVORITE AUTHOR IS MICHAEL CHABON!       |
+| MY FAVORITE AUTHOR IS DON DELILLO!          |
+| MY FAVORITE AUTHOR IS DAVE EGGERS!          |
+| MY FAVORITE AUTHOR IS DAVE EGGERS!          |
+| MY FAVORITE AUTHOR IS DAVE EGGERS!          |
+| MY FAVORITE AUTHOR IS DAVID FOSTER WA       |
+
+select concat(upper('my favourite author is '),upper(author_fname),' ',upper(author_lname),'!') as yell from books order by author_lname;
+

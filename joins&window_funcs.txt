@@ -1,0 +1,244 @@
+create table party1(name varchar(20), age int constraint checkAge check(age>18));
+
+create table company(name varchar(20), address varchar(100) not null,
+constraint name_address unique(name,address));
+
+create database shop;
+
+create table customers(
+id INT PRIMARY KEY auto_increment,
+first_name varchar(50),
+last_name varchar(50),
+email varchar(50)
+);
+
+create table ORDERS(
+id INT PRIMARY KEY auto_increment,
+order_date DATE,
+amount decimal(8,2),
+customer_id int, 
+Foreign key(customer_id) REFERENCES customers(id) on delete cascade
+);
+
+-- alter table orders add
+-- FOREIGN KEY(customer_id) REFERENCES
+-- customers(id);
+
+select * from orders;
+select * from customers;
+
+
+select first_name,last_name,ifnull(sum(amount),0) as expenditure from customers 
+left join orders on customers.id=orders.customer_id group by 
+first_name,last_name ;                  
+
+
+-- INSERT INTO customers (first_name, last_name, email) 
+-- VALUES ('Boy', 'George', 'george@gmail.com'),
+--        ('George', 'Michael', 'gm@gmail.com'),
+--        ('David', 'Bowie', 'david@gmail.com'),
+--        ('Blue', 'Steele', 'blue@gmail.com'),
+--        ('Bette', 'Davis', 'bette@aol.com');
+--        
+--        
+-- INSERT INTO orders (order_date, amount, customer_id)
+-- VALUES ('2016-02-10', 99.99, 1),
+--        ('2017-11-11', 35.50, 1),
+--        ('2014-12-12', 800.67, 2),
+--        ('2015-01-03', 12.50, 2),
+--        ('1999-04-11', 450.25, 5);
+
+CREATE DATABASE EXAMS;
+
+CREATE TABLE Students(Id INT auto_increment primary key
+,first_name varchar(50));
+
+CREATE TABLE Papers(
+Student_id INT 
+,title varchar(50)
+,grade int,
+foreign key(Student_id) references Students(id) on delete cascade);
+
+
+INSERT INTO Students (first_name) VALUES 
+('Caleb'), ('Samantha'), ('Raj'), ('Carlos'), ('Lisa');
+
+INSERT INTO Papers (Student_id, title, grade ) VALUES
+(1, 'My First Book Report', 60),
+(1, 'My Second Book Report', 75),
+(2, 'Russian Lit Through The Ages', 94),
+(2, 'De Montaigne and The Art of The Essay', 98),
+(4, 'Borges and Magical Realism', 89);
+
+
+-- Select first_name,IFNULL(avg(grade),0) as averageGrade,
+-- (case 
+-- WHEN avg(grade)>75 THEN 'PASSING'
+-- ELSE 'FAILING'
+-- end) AS passing_status from 
+-- Students left join Papers on Students.Id=Papers.Student_id group by 
+-- first_name order by averageGrade desc;
+
+
+
+CREATE DATABASE MOVIES;
+
+
+
+CREATE TABLE reviewers(
+id int auto_increment,
+first_name varchar(20) NOT NULL,
+last_name varchar(20) NOT NULL,
+constraint primary key (id));
+
+CREATE TABLE series(
+id int auto_increment,
+title varchar(100),
+released_year year,
+genre varchar(20),
+constraint primary key (id));
+
+
+CREATE TABLE reviews(
+id int auto_increment,
+rating decimal(2,1),
+reviewer_id int,
+series_id int,
+constraint primary key (id),
+FOREIGN KEY(reviewer_id) references reviewers(id),
+FOREIGN KEY(series_id) references series(id));
+
+
+INSERT INTO series (title, released_year, genre) VALUES
+    ('Archer', 2009, 'Animation'),
+    ('Arrested Development', 2003, 'Comedy'),
+    ("Bob's Burgers", 2011, 'Animation'),
+    ('Bojack Horseman', 2014, 'Animation'),
+    ("Breaking Bad", 2008, 'Drama'),
+    ('Curb Your Enthusiasm', 2000, 'Comedy'),
+    ("Fargo", 2014, 'Drama'),
+    ('Freaks and Geeks', 1999, 'Comedy'),
+    ('General Hospital', 1963, 'Drama'),
+    ('Halt and Catch Fire', 2014, 'Drama'),
+    ('Malcolm In The Middle', 2000, 'Comedy'),
+    ('Pushing Daisies', 2007, 'Comedy'),
+    ('Seinfeld', 1989, 'Comedy'),
+    ('Stranger Things', 2016, 'Drama');
+    
+INSERT INTO reviewers (first_name, last_name) VALUES
+    ('Thomas', 'Stoneman'),
+    ('Wyatt', 'Skaggs'),
+    ('Kimbra', 'Masters'),
+    ('Domingo', 'Cortes'),
+    ('Colt', 'Steele'),
+    ('Pinkie', 'Petit'),
+    ('Marlon', 'Crafford');
+    
+INSERT INTO reviews(series_id, reviewer_id, rating) VALUES
+    (1,1,8.0),(1,2,7.5),(1,3,8.5),(1,4,7.7),(1,5,8.9),
+    (2,1,8.1),(2,4,6.0),(2,3,8.0),(2,6,8.4),(2,5,9.9),
+    (3,1,7.0),(3,6,7.5),(3,4,8.0),(3,3,7.1),(3,5,8.0),
+    (4,1,7.5),(4,3,7.8),(4,4,8.3),(4,2,7.6),(4,5,8.5),
+    (5,1,9.5),(5,3,9.0),(5,4,9.1),(5,2,9.3),(5,5,9.9),
+    (6,2,6.5),(6,3,7.8),(6,4,8.8),(6,2,8.4),(6,5,9.1),
+    (7,2,9.1),(7,5,9.7),
+    (8,4,8.5),(8,2,7.8),(8,6,8.8),(8,5,9.3),
+    (9,2,5.5),(9,3,6.8),(9,4,5.8),(9,6,4.3),(9,5,4.5),
+    (10,5,9.9),
+    (13,3,8.0),(13,4,7.2),
+    (14,2,8.5),(14,3,8.9),(14,4,8.9);
+    
+    
+select first_name,last_name,
+count(*) as COUNT,
+IFNULL(min(rating),0) as MIN,
+IFNULL(max(rating),0) as MAX,
+IFNULL(avg(rating),0) as AVG,
+case 
+	WHEN count(RATING)!=0 THEN 'ACTIVE'
+	ELSE 'INACTIVE'
+end as status 
+from reviewers LEFT join reviews on reviewers.id=reviews.reviewer_id
+group by first_name,last_name;
+
+
+create VIEW full_review  as
+SELECT TITLE,RATING,CONCAT(FIRST_NAME," ",LAST_NAME) AS REVIEWER 
+FROM REVIEWS JOIN SERIES ON REVIEWS.SERIES_ID=SERIES.ID
+JOIN REVIEWERS ON REVIEWS.REVIEWER_ID=reviewers.ID;
+
+CREATE TABLE employees (
+    emp_no INT PRIMARY KEY AUTO_INCREMENT,
+    department VARCHAR(20),
+    salary INT
+);
+
+INSERT INTO employees (department, salary) VALUES
+('engineering', 80000),
+('engineering', 69000),
+('engineering', 70000),
+('engineering', 103000),
+('engineering', 67000),
+('engineering', 89000),
+('engineering', 91000),
+('sales', 59000),
+('sales', 70000),
+('sales', 159000),
+('sales', 72000),
+('sales', 60000),
+('sales', 61000),
+('sales', 61000),
+('customer service', 38000),
+('customer service', 45000),
+('customer service', 61000),
+('customer service', 40000),
+('customer service', 31000),
+('customer service', 56000),
+('customer service', 55000);
+
+select 
+EMP_NO,
+DEPARTMENT,
+SALARY,
+AVG(SALARY) OVER(partition by DEPARTMENT) AS DEPT_AVG,
+AVG(SALARY) OVER() AS COMPANY_AVG
+FROM EMPLOYEES;
+
+select 
+EMP_NO,
+DEPARTMENT,
+SALARY,
+RANK() OVER(PARTITION BY DEPARTMENT ORDER BY SALARY DESC) AS DEPARTMENT_SALARY_RANK,
+RANK() OVER(ORDER BY SALARY DESC) AS COMPANY_SALARY_RANK
+FROM EMPLOYEES;
+
+select 
+EMP_NO,
+DEPARTMENT,
+SALARY,
+ROW_NUMBER() OVER(PARTITION BY DEPARTMENT ORDER BY SALARY DESC) AS DEPARTMENT_SALARY_NUMBER,
+RANK() OVER(ORDER BY SALARY DESC) AS COMPANY_SALARY_RANK
+FROM EMPLOYEES;
+
+select 
+	emp_no,
+    department,
+    salary,
+    NTILE(4) OVER(ORDER BY SALARY DESC) AS SALARY_QUARTILE
+FROM EMPLOYEES;
+
+
+select 
+	emp_no,
+    department,
+    salary,
+    FIRST_VALUE(EMP_NO) OVER(ORDER BY SALARY DESC)
+FROM EMPLOYEES;
+
+
+select 
+	emp_no,
+    department,
+    salary,
+    salary-LAG(salary) over(order by salary desc) as salary_diff
+FROM EMPLOYEES;

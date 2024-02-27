@@ -1,0 +1,64 @@
+1. PRINT THIS
+ +------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Caleb      | My Second Book Report                 |    75 |
+| Caleb      | My First Book Report                  |    60 |
++------------+---------------------------------------+-------+
+select first_name,title,grade from Students join Papers on Students.Id=Papers.Student_id order by grade;
+
+2. PRINT THIS
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Caleb      | My First Book Report                  |    60 |
+| Caleb      | My Second Book Report                 |    75 |
+| Samantha   | Russian Lit Through The Ages          |    94 |
+| Samantha   | De Montaigne and The Art of The Essay |    98 |
+| Raj        | NULL                                  |  NULL |
+| Carlos     | Borges and Magical Realism            |    89 |
+| Lisa       | NULL                                  |  NULL |
++------------+---------------------------------------+-------+
+select first_name,title,grade from Students left join Papers on Students.Id=Papers.Student_id;
+
+3. PRINT THIS
++------------+---------------------------------------+-------+
+| first_name | title                                 | grade |
++------------+---------------------------------------+-------+
+| Caleb      | My First Book Report                  | 60    |
+| Caleb      | My Second Book Report                 | 75    |
+| Samantha   | Russian Lit Through The Ages          | 94    |
+| Samantha   | De Montaigne and The Art of The Essay | 98    |
+| Raj        | MISSING                               | 0     |
+| Carlos     | Borges and Magical Realism            | 89    |
+| Lisa       | MISSING                               | 0     |
++------------+---------------------------------------+-------+
+select first_name,IFNULL(title,'MISSING'),IFNULL(grade,0) from Students left join Papers on Students.Id=Papers.Student_id;
+
+4. PRINT THIS
+ +------------+---------+
+| first_name | average |
++------------+---------+
+| Samantha   | 96.0000 |
+| Carlos     | 89.0000 |
+| Caleb      | 67.5000 |
+| Raj        | 0       |
+| Lisa       | 0       |
++------------+---------+
+select first_name,IFNULL(avg(grade),0) as averageGrade from Students left join Papers on Students.Id=Papers.Student_id group by first_name order by averageGrade desc;
+
+
+5. PRINT THIS
++------------+---------+----------------+
+| first_name | average | passing_status |
++------------+---------+----------------+
+| Samantha   | 96.0000 | PASSING        |
+| Carlos     | 89.0000 | PASSING        |
+| Caleb      | 67.5000 | FAILING        |
+| Raj        | 0       | FAILING        |
+| Lisa       | 0       | FAILING        |
++------------+---------+----------------+
+Select first_name,IFNULL(avg(grade),0) as averageGrade,(case WHEN avg(grade)>75 THEN 'PASSING'ELSE 'FAILING'end) AS passing_status from Students left join Papers on Students.Id=Papers.Student_id group by first_name order by averageGrade desc;

@@ -1,0 +1,28 @@
+1. Find earliest date of joining
+
+select concat(monthname(created_at)," ",day(created_at)," ",year(created_at)) as earliest_date from users order by created_at asc limit 1;
+
+2. E-mail of user with earliest joining
+
+select email from users where created_at =(select created_at from users order by created_at asc limit 1);
+
+3. Users according to month joined
+
+select monthname(created_at) as month,count(*) as count from users group by month order by count desc;
+
+4. Users with yahoo e-mail
+
+select count(*) as Yahoo_users from users where email like '%yahoo%';
+
+5. Group according to e-mail service and count
+
+SELECT CASE 
+         WHEN email LIKE '%@gmail.com' THEN 'gmail' 
+         WHEN email LIKE '%@yahoo.com' THEN 'yahoo' 
+         WHEN email LIKE '%@hotmail.com' THEN 'hotmail' 
+         ELSE 'other' 
+       end      AS provider, 
+       Count(*) AS total_users 
+FROM   users 
+GROUP  BY provider 
+ORDER  BY total_users DESC; 

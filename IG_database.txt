@@ -1,0 +1,35 @@
+Users
+--id (primary key)
+--Name
+--Profile photo
+-- Followers
+-- Follower Id(foreign key references id of follower)
+-- follows
+-- comments made 
+-- comment id (foreign key references id of comments)
+-- photos posted (Count)
+-- photo id (foreign key references id of photos)
+-- liked photos
+
+comments
+-- id (primary key)
+--text
+-- author(foreign key points id of user)
+
+hashtags
+-- tagContent
+-- author(foreign key points id of user)
+
+photos
+--id (primary key)
+--images
+-- author (foreign key points id of user)
+
+
+likes
+--like by(foreign key points id of user)
+-- Number of likes.
+
+Followers
+-- id (primary key)
+-- Followername 

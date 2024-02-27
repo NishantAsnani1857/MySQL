@@ -1,0 +1,95 @@
+1. Create a table pastry with Name and quantity fieds check for columns and then delete the table
+
+create TABLE PASTRIES(NAME VARCHAR(50), QUANTITY int);
+SHOW COLUMNS IN PASTRIES;
+DROP TABLE PASTRIES;
+
+2. Crete people table and makke single and multiple inserts
+
+insert into people values('Tina','Belcher',13);
+insert into people values('Bob','Belcher',42);
+insert into people values('Philip','Frond',38),
+('Linda','Belcher',45),('Calvin','Fischoeder',70);
+select * from people;
+
+3. Tasks in select section
+
+Select all cat id's
+select cat_id from cats;
+
+Select all tabby cats
+select * from cats where breed='tabby';
+
+select all cats where id=age
+select * from cats where cat_id=age;
+
+4. Update and delete exercise 
+
+change name of cate named jackson to jackson
+update cats set name="Jack" where name='Jackson';
+
+change breed of cat named Ringo
+update cats set breed='British shorthair' where name='Ringo';
+
+change age of a particular cat breed
+update cats set age=12 where breed='Maine Coon';
+
+delete cat with name egg
+delete from cats where name="Egg";
+
+delete all 4 year old cats
+delete from cats where age=4;
+
+delete all cats where age and cat_id is same
+delete from cats where age=cat_id;
+
+empty out cats table
+delete from cats;
+
+
+5. CRUD exercise
+
+create shirt_db and shirt table with given data
+
+create database shirt_db
+create table shirts(shirt_id int primary key auto_increment,article varchar(30),color varchar(20),shirt_size varchar(5),last_worn int default 0);
+-- insert into shirts(article,color,shirt_size,last_worn) values
+-- ('t-shirt', 'white', 'S', 10),
+-- ('t-shirt', 'green', 'S', 200),
+-- ('polo shirt', 'black', 'M', 10),
+-- ('tank top', 'blue', 'S', 50),
+-- ('t-shirt', 'pink', 'S', 0),
+-- ('polo shirt', 'red', 'M', 5),
+-- ('tank top', 'white', 'S', 200),
+-- ('tank top', 'blue', 'M', 15);
+
+
+insert single entry in table
+insert into  shirts(article,color,shirt_size,last_worn) values('polo shirt','Purple','M',50);
+
+select article and color from shirts
+select article,color from shirts;
+
+select shirt id's whose size is M
+select shirt_id from shirts where shirt_size='M';
+
+update shirt size to L with article of polo.
+update shirts set shirt_size='L' where article='polo shirt';
+
+update last worn to 0 where last worn has been 15
+update shirts set last_worn=0 where last_worn=15;
+
+Update all white shirts Change size to 'XS' and color to 'off white'
+update shirts set shirt_size='XS' and color='offwhite' where color='white'; //CHANGE
+
+Delete all old shirts Last worn 200 days ago
+delete from shirts where last_worn=200;
+
+Delete all tank tops
+delete from shirts where article='tank top';
+
+Delete all shirts
+delete from shirts where article='t-shirt';
+
+Delete entire shirts table
+drop table shirts;

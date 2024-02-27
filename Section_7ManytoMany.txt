@@ -1,0 +1,138 @@
+1. PRINT THIS
++----------------------+--------+
+| title                | rating |
++----------------------+--------+
+| Archer               |    8.0 |
+| Archer               |    7.5 |
+| Archer               |    8.5 |
+| Archer               |    7.7 |
+| Archer               |    8.9 |
+| Arrested Development |    8.1 |
+| Arrested Development |    6.0 |
+| Arrested Development |    8.0 |
+| Arrested Development |    8.4 |
+| Arrested Development |    9.9 |
+| Bob's Burgers        |    7.0 |
+| Bob's Burgers        |    7.5 |
+| Bob's Burgers        |    8.0 |
+| Bob's Burgers        |    7.1 |
+| Bob's Burgers        |    8.0 |
++----------------------+--------+
+SELECT TITLE,RATING FROM SERIES JOIN REVIEWS ON SERIES.ID=REVIEWS.series_id LIMIT 15;
+
+2. PRINT THIS
++----------------------+------------+
+| title                | avg_rating |
++----------------------+------------+
+| General Hospital     |    5.38000 |
+| Bob's Burgers        |    7.52000 |
+| Seinfeld             |    7.60000 |
+| Bojack Horseman      |    7.94000 |
+| Arrested Development |    8.08000 |
+| Curb Your Enthusiasm |    8.12000 |
+| Archer               |    8.12000 |
+| Freaks and Geeks     |    8.60000 |
+| Stranger Things      |    8.76667 |
+| Breaking Bad         |    9.36000 |
+| Fargo                |    9.40000 |
+| Halt and Catch Fire  |    9.90000 |
++----------------------+------------+
+SELECT TITLE,AVG(RATING) AS avg_rating FROM SERIES JOIN REVIEWS ON SERIES.ID=REVIEWS.series_id GROUP BY TITLE ORDER BY avg_rating;
+
+3. PRINT THIS
++------------+-----------+--------+
+| first_name | last_name | rating |
++------------+-----------+--------+
+| Thomas     | Stoneman  |    8.0 |
+| Thomas     | Stoneman  |    8.1 |
+| Thomas     | Stoneman  |    7.0 |
+| Thomas     | Stoneman  |    7.5 |
+| Thomas     | Stoneman  |    9.5 |
+| Wyatt      | Skaggs    |    7.5 |
+| Wyatt      | Skaggs    |    7.6 |
+| Wyatt      | Skaggs    |    9.3 |
+| Wyatt      | Skaggs    |    6.5 |
+| Wyatt      | Skaggs    |    8.4 |
+| Wyatt      | Skaggs    |    9.1 |
+| Wyatt      | Skaggs    |    7.8 |
+| Wyatt      | Skaggs    |    5.5 |
+| Wyatt      | Skaggs    |    8.5 |
+| Kimbra     | Masters   |    8.5 |
+| Kimbra     | Masters   |    8.0 |
+| Kimbra     | Masters   |    7.1 |
+| Kimbra     | Masters   |    7.8 |
+| Kimbra     | Masters   |    9.0 |
+| Kimbra     | Masters   |    7.8 |
++------------+-----------+--------+
+ SELECT FIRST_NAME,LAST_NAME,RATING FROM REVIEWERS JOIN REVIEWS ON REVIEWERS.ID=REVIEWS.REVIEWER_ID  LIMIT 15;
+
+
+4. PRINT THIS
++-----------------------+
+| unreviewed_series     |
++-----------------------+
+| Malcolm In The Middle |
+| Pushing Daisies       |
++-----------------------+
+SELECT TITLE AS unreviewed_series FROM SERIES WHERE TITLE NOT IN(SELECT TITLE FROM SERIES JOIN REVIEWS ON SERIES.ID=REVIEWS.SERIES_ID);
+
+5. PRINT THIS
++-----------+------------+
+| genre     | avg_rating |
++-----------+------------+
+| Animation |    7.86000 |
+| Comedy    |    8.16250 |
+| Drama     |    8.04375 |
++-----------+------------+
+SELECT GENRE,AVG(RATING) AS avg_rating FROM SERIES JOIN REVIEWS ON SERIES.ID=REVIEWS.SERIES_ID GROUP BY GENRE;
+
+
+6. PRINT THIS
++------------+-----------+-------+-----+-----+---------+----------+
+| first_name | last_name | COUNT | MIN | MAX | AVG     | STATUS   |
++------------+-----------+-------+-----+-----+---------+----------+
+| Thomas     | Stoneman  |     5 | 7.0 | 9.5 | 8.02000 | ACTIVE   |
+| Wyatt      | Skaggs    |     9 | 5.5 | 9.3 | 7.80000 | ACTIVE   |
+| Kimbra     | Masters   |     9 | 6.8 | 9.0 | 7.98889 | ACTIVE   |
+| Domingo    | Cortes    |    10 | 5.8 | 9.1 | 7.83000 | ACTIVE   |
+| Colt       | Steele    |    10 | 4.5 | 9.9 | 8.77000 | ACTIVE   |
+| Pinkie     | Petit     |     4 | 4.3 | 8.8 | 7.25000 | ACTIVE   |
+| Marlon     | Crafford  |     0 | 0.0 | 0.0 | 0.00000 | INACTIVE |
++------------+-----------+-------+-----+-----+---------+----------+
+
+select first_name,last_name,
+count(*) as COUNT,
+IFNULL(min(rating),0) as MIN,
+IFNULL(max(rating),0) as MAX,
+IFNULL(avg(rating),0) as AVG,
+case 
+	WHEN count(RATING)!=0 THEN 'ACTIVE'
+	ELSE 'INACTIVE'
+end as status 
+from reviewers LEFT join reviews on reviewers.id=reviews.reviewer_id
+group by first_name,last_name;
+
+
+7. PRINT THIS
++----------------------+--------+-----------------+
+| title                | rating | reviewer        |
++----------------------+--------+-----------------+
+| Archer               |    8.0 | Thomas Stoneman |
+| Archer               |    7.7 | Domingo Cortes  |
+| Archer               |    8.5 | Kimbra Masters  |
+| Archer               |    7.5 | Wyatt Skaggs    |
+| Archer               |    8.9 | Colt Steele     |
+| Arrested Development |    8.4 | Pinkie Petit    |
+| Arrested Development |    9.9 | Colt Steele     |
+| Arrested Development |    8.1 | Thomas Stoneman |
+| Arrested Development |    6.0 | Domingo Cortes  |
+| Arrested Development |    8.0 | Kimbra Masters  |
+| Bob's Burgers        |    7.0 | Thomas Stoneman |
+| Bob's Burgers        |    8.0 | Domingo Cortes  |
+| Bob's Burgers        |    7.1 | Kimbra Masters  |
+| Bob's Burgers        |    7.5 | Pinkie Petit    |
+| Bob's Burgers        |    8.0 | Colt Steele     |
++----------------------+--------+-----------------+
+SELECT TITLE,RATING,CONCAT(FIRST_NAME," ",LAST_NAME) AS REVIEWER FROM REVIEWS JOIN SERIES ON REVIEWS.SERIES_ID=SERIES.ID JOIN REVIEWERS ON REVIEWS.REVIEWER_ID=reviewers.ID limit 10;
+
+
